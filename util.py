@@ -47,7 +47,7 @@ def get_config():
     parser.add_argument("--buffersize", type=int, default=10000, help="Replay buffer size")
     parser.add_argument("--epsilon_start", type=float, default=1.0, help="Initial epsilon for exploration")
     parser.add_argument("--epsilon_end", type=float, default=0.01, help="Final epsilon for exploration")
-    parser.add_argument("--epsilon_decay", type=float, default=0.99987, help="Epsilon decay rate")
+    parser.add_argument("--epsilon_decay", type=float, default=0.9997, help="Epsilon decay rate")
     parser.add_argument("--update_time", type=int, default=100, help="Target network update frequency")
     parser.add_argument("--token", type=str, help="Authentication token")
     args = parser.parse_args()
