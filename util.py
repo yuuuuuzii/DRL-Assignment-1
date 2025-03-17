@@ -40,14 +40,14 @@ class ReplayBuffer:
 def get_config():
     parser = argparse.ArgumentParser(description="DQN Agent Configuration")
     
-    parser.add_argument("--episodes", type=int, default=15000, help="Number of episodes")
+    parser.add_argument("--episodes", type=int, default=20000, help="Number of episodes")
     parser.add_argument("--learning_rate", type=float, default=0.0005, help="Learning rate for optimizer")
     parser.add_argument("--gamma", type=float, default=0.99, help="Discount factor")
     parser.add_argument("--batchsize", type=int, default=256, help="Batch size")
     parser.add_argument("--buffersize", type=int, default=10000, help="Replay buffer size")
     parser.add_argument("--epsilon_start", type=float, default=1.0, help="Initial epsilon for exploration")
     parser.add_argument("--epsilon_end", type=float, default=0.01, help="Final epsilon for exploration")
-    parser.add_argument("--epsilon_decay", type=float, default=0.9997, help="Epsilon decay rate")
+    parser.add_argument("--epsilon_decay", type=float, default=0.99975, help="Epsilon decay rate")
     parser.add_argument("--update_time", type=int, default=100, help="Target network update frequency")
     parser.add_argument("--token", type=str, help="Authentication token")
     args = parser.parse_args()
