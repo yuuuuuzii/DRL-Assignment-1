@@ -5,7 +5,7 @@ from util import get_config
 
 def train_agent(config):
     # The default parameters should allow learning, but you can still adjust them to achieve better training performance.
-    env = SimpleTaxiEnv()
+    
     state_size = 16
     action_size = 6
     agent = DQN_agent(state_size, action_size, config)
@@ -17,6 +17,7 @@ def train_agent(config):
 
     for episode in tqdm(range(episodes)):
         
+        env = SimpleTaxiEnv(grid_size = torch.random.choice())
         obs, _ = env.reset()
         done = False
         total_reward = 0
