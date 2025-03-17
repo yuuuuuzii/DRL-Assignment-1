@@ -19,7 +19,7 @@ class DQN_agent:
 
         # 初始化 Q-Network 和 Target Network
         self.q_net = DQNnetwork(state_dim, action_dim).to(self.device)
-        self.optimizer = optim.Adam(self.q_net.parameters(), lr=config["learning_rate"])
+        self.optimizer = optim.SGD(self.q_net.parameters(), lr=config["learning_rate"])
         self.target_net = DQNnetwork(state_dim, action_dim).to(self.device)
         self.target_net.load_state_dict(self.q_net.state_dict())  # 初始化為相同的權重
         self.target_net.eval() 

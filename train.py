@@ -28,14 +28,9 @@ def train_agent(config):
           agent.buffer.push(obs, action, reward, next_obs, done)
           if len(agent.buffer.buffer) > agent.batchsize:
             agent.train()
-          
-          if (env.passenger_loc[0],env.passenger_loc[1]) != (next_obs[0],next_obs[1]):
-            reward += -1
+  
           obs = next_obs
           total_reward += reward
-
-
-
 
         if epsilon > epsilon_min:
             epsilon *= epsilon_decay
