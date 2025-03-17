@@ -14,7 +14,7 @@ import random
 
 
 class SimpleTaxiEnv():
-    def __init__(self, grid_size=5, fuel_limit=1000):
+    def __init__(self, grid_size=5, fuel_limit=300):
         """
         Custom Taxi environment supporting different grid sizes.
         """
@@ -128,44 +128,44 @@ class SimpleTaxiEnv():
         return state
     def render_env(self, taxi_pos,   action=None, step=None, fuel=None):
         clear_output(wait=True)
+        
+        # grid = [['.'] * self.grid_size for _ in range(self.grid_size)]
+        
+        # '''
+        # # Place passenger
+        # py, px = passenger_pos
+        # if 0 <= px < self.grid_size and 0 <= py < self.grid_size:
+        #     grid[py][px] = 'P'
+        # '''
+        
+        
+        # grid[0][0]='R'
+        # grid[0][4]='G'
+        # grid[4][0]='Y'
+        # grid[4][4]='B'
+        # '''
+        # # Place destination
+        # dy, dx = destination_pos
+        # if 0 <= dx < self.grid_size and 0 <= dy < self.grid_size:
+        #     grid[dy][dx] = 'D'
+        # '''
+        # # Place taxi
+        # ty, tx = taxi_pos
+        # if 0 <= tx < self.grid_size and 0 <= ty < self.grid_size:
+        #     grid[ty][tx] = '🚖'
 
-        grid = [['.'] * self.grid_size for _ in range(self.grid_size)]
-        
-        '''
-        # Place passenger
-        py, px = passenger_pos
-        if 0 <= px < self.grid_size and 0 <= py < self.grid_size:
-            grid[py][px] = 'P'
-        '''
-        
-        
-        grid[0][0]='R'
-        grid[0][4]='G'
-        grid[4][0]='Y'
-        grid[4][4]='B'
-        '''
-        # Place destination
-        dy, dx = destination_pos
-        if 0 <= dx < self.grid_size and 0 <= dy < self.grid_size:
-            grid[dy][dx] = 'D'
-        '''
-        # Place taxi
-        ty, tx = taxi_pos
-        if 0 <= tx < self.grid_size and 0 <= ty < self.grid_size:
-            grid[ty][tx] = '🚖'
-
-        # Print step info
-        print(f"\nStep: {step}")
-        print(f"Taxi Position: ({tx}, {ty})")
-        #print(f"Passenger Position: ({px}, {py}) {'(In Taxi)' if (px, py) == (tx, ty) else ''}")
-        #print(f"Destination: ({dx}, {dy})")
-        print(f"Fuel Left: {fuel}")
+        # # Print step info
+        # print(f"\nStep: {step}")
+        # print(f"Taxi Position: ({tx}, {ty})")
+        # #print(f"Passenger Position: ({px}, {py}) {'(In Taxi)' if (px, py) == (tx, ty) else ''}")
+        # #print(f"Destination: ({dx}, {dy})")
+        # print(f"Fuel Left: {fuel}")
         print(f"Last Action: {self.get_action_name(action)}\n")
 
-        # Print grid
-        for row in grid:
-            print(" ".join(row))
-        print("\n")
+        # # Print grid
+        # for row in grid:
+        #     print(" ".join(row))
+        # print("\n")
 
     def get_action_name(self, action):
         """Returns a human-readable action name."""
@@ -187,26 +187,29 @@ def run_agent(agent_file, env_config, render=False):
     
     taxi_row, taxi_col, _,_,_,_,_,_,_,_,obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look, destination_look = obs
 
-    if render:
-        env.render_env((taxi_row, taxi_col),
-                       action=None, step=step_count, fuel=env.current_fuel)
-        time.sleep(0.5)
+    # if render:
+    #     env.render_env((taxi_row, taxi_col),
+    #                    action=None, step=step_count, fuel=env.current_fuel)
+    #     time.sleep(0.5)
+    actions = [0]*6
+    pick = 0
     while not done:
         
         
         action = student_agent.get_action(obs)
-
+        actions[action]+=1
         obs, reward, done, _ = env.step(action)
-        print('obs=',obs)
+        #print('obs=',obs)
         total_reward += reward
         step_count += 1
 
         taxi_row, taxi_col, _,_,_,_,_,_,_,_,obstacle_north, obstacle_south, obstacle_east, obstacle_west, passenger_look,destination_look = obs
-
-        if render:
-            env.render_env((taxi_row, taxi_col),
-                           action=action, step=step_count, fuel=env.current_fuel)
-
+        if env.passenger_picked_up:
+            pick += 1
+        # if render:
+        #     env.render_env((taxi_row, taxi_col),
+        #                    action=action, step=step_count, fuel=env.current_fuel)
+    print(f"actions: {actions}")
     print(f"Agent Finished in {step_count} steps, Score: {total_reward}")
     return total_reward
 

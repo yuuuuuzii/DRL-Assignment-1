@@ -31,11 +31,13 @@ class DQN_agent:
     def select_action(self, state, epsilon):
 
         state = np.array(state, dtype=float)
-        state[:10]/=(np.max(state[2:6])+1)
-        
-        state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0).to(self.device) #把state 轉為 [1, dimension]的維度
+
+        new_array = state[2:]
+        new_array[[0, 2, 4, 6]] -= state[0]
+        new_array[[1, 3, 5, 7]] -= state[1]
+        new_array = torch.tensor(new_array, dtype=torch.float32).unsqueeze(0).to(self.device) #把state 轉為 [1, dimension]的維度
         with torch.no_grad():
-            action_values = self.q_net(state_tensor)  # 計算 Q_net預測的action 分佈
+            action_values = self.q_net(new_array)  # 計算 Q_net預測的action 分佈
 
         if epsilon > np.random.rand(): ## 亂選
             return random.choice(range(self.action_dim))

@@ -23,17 +23,31 @@ class ReplayBuffer:
         self.buffer = deque(maxlen = capacity)
         self.device = device
     def push(self, state, action, reward, next_state, done):
-        self.buffer.append((state, action, reward, next_state, done))
+        state = np.array(state, dtype=float)
+        # state[:10]/=(np.max(state[2:6])+1)
+        new_array = state[2:].copy()
+        new_array[[0, 2, 4, 6]] -= state[0]
+        new_array[[1, 3, 5, 7]] -= state[1]
+        new_array = torch.tensor(new_array, dtype=torch.float32).to(self.device)
+
+        next_state = np.array(next_state, dtype=float)
+        # next_state[:10]/=(np.max(next_state[2:6])+1)
+        next_array = next_state[2:].copy()
+        next_array[[0, 2, 4, 6]] -= next_state[0]
+        next_array[[1, 3, 5, 7]] -= next_state[1]
+        next_array = torch.tensor(next_array, dtype=torch.float32).to(self.device)
+
+        self.buffer.append((new_array, action, reward, next_array, done))
 
     def sample(self, batch_size):
         batch = random.sample(self.buffer, batch_size)
         states, actions, rewards, next_states, dones = zip(*batch)    
         
         return(
-            torch.tensor(states, dtype=torch.float32).to(self.device),
+            torch.stack(states).to(self.device),
             torch.tensor(actions, dtype=torch.int64).to(self.device),
             torch.tensor(rewards, dtype=torch.float32).to(self.device),
-            torch.tensor(next_states, dtype=torch.float32).to(self.device),
+            torch.stack(next_states).to(self.device),
             torch.tensor(dones, dtype=torch.float32).to(self.device)
         )
 
@@ -46,9 +60,9 @@ def get_config():
     parser.add_argument("--batchsize", type=int, default=256, help="Batch size")
     parser.add_argument("--buffersize", type=int, default=10000, help="Replay buffer size")
     parser.add_argument("--epsilon_start", type=float, default=1.0, help="Initial epsilon for exploration")
-    parser.add_argument("--epsilon_end", type=float, default=0.01, help="Final epsilon for exploration")
-    parser.add_argument("--epsilon_decay", type=float, default=0.99975, help="Epsilon decay rate")
-    parser.add_argument("--update_time", type=int, default=100, help="Target network update frequency")
+    parser.add_argument("--epsilon_end", type=float, default=0.05, help="Final epsilon for exploration")
+    parser.add_argument("--epsilon_decay", type=float, default=0.99985, help="Epsilon decay rate")
+    parser.add_argument("--update_time", type=int, default=500, help="Target network update frequency")
     parser.add_argument("--token", type=str, help="Authentication token")
     args = parser.parse_args()
     return vars(args)
