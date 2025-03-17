@@ -29,8 +29,10 @@ class DQN_agent:
         self.buffer = ReplayBuffer(self.buffer_size, self.device)
 
     def select_action(self, state, epsilon):
+
         state = np.array(state, dtype=float)
         state[:10]/=(np.max(state[2:6])+1)
+        
         state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0).to(self.device) #把state 轉為 [1, dimension]的維度
         with torch.no_grad():
             action_values = self.q_net(state_tensor)  # 計算 Q_net預測的action 分佈
