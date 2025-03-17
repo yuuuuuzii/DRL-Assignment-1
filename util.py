@@ -49,7 +49,7 @@ def get_config():
     parser.add_argument("--epsilon_end", type=float, default=0.1, help="Final epsilon for exploration")
     parser.add_argument("--epsilon_decay", type=float, default=0.9999, help="Epsilon decay rate")
     parser.add_argument("--update_time", type=int, default=100, help="Target network update frequency")
-
+    parser.add_argument("--token", type=str, help="Authentication token")
     args = parser.parse_args()
     return vars(args)
 
