@@ -8,9 +8,9 @@ import argparse
 class DQNnetwork(nn.Module):
     def __init__(self, state_dim, action_dim):
         super(DQNnetwork, self).__init__()
-        self.fc1 = nn.Linear(state_dim, 128)
-        self.fc2 = nn.Linear(128, 256)
-        self.fc3 = nn.Linear(256,128)
+        self.fc1 = nn.Linear(state_dim, 32)
+        self.fc2 = nn.Linear(32, 64)
+        self.fc3 = nn.Linear(64,128)
         self.fc4 = nn.Linear(128, action_dim)
     def forward(self, x):
         x = F.relu(self.fc1(x))

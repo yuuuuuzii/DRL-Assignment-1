@@ -18,7 +18,7 @@ def train_agent(config):
     for episode in tqdm(range(episodes)):
         if(episode%2 == 0):
           env = SimpleTaxiEnv(grid_size = random.randint(9, 10))
-        else;
+        else:
           env = SimpleTaxiEnv(grid_size = random.randint(5, 8))
         obs, _ = env.reset()
         done = False
