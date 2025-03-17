@@ -2,7 +2,7 @@ from tqdm import tqdm
 from set_agent import DQN_agent
 from simple_custom_taxi_env import SimpleTaxiEnv
 from util import get_config
-
+import random
 def train_agent(config):
     # The default parameters should allow learning, but you can still adjust them to achieve better training performance.
     
@@ -17,7 +17,7 @@ def train_agent(config):
 
     for episode in tqdm(range(episodes)):
         
-        env = SimpleTaxiEnv()
+        env = SimpleTaxiEnv(grid_size = random.randint(5, 10))
         obs, _ = env.reset()
         done = False
         total_reward = 0
