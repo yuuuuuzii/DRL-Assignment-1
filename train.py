@@ -17,7 +17,7 @@ def train_agent(config):
 
     for episode in tqdm(range(episodes)):
         
-        env = SimpleTaxiEnv(grid_size = torch.random.choice())
+        env = SimpleTaxiEnv()
         obs, _ = env.reset()
         done = False
         total_reward = 0
